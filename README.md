@@ -17,17 +17,7 @@ devtools::install_github("rahilfaizan/Knn_400")
 ## Usage
 ### Load required libraries
 ```
-library(doParallel)
 library(fastDummies)
-```
-### Detect the number of available CPU cores
-```
-num_cores <- detectCores()
-```
-### Initialize and register a parallel cluster
-```
-cl <- makeCluster(num_cores)
-registerDoParallel(cl)
 ```
 ## KNN model function
 ```
@@ -69,9 +59,5 @@ m <- mode(x, na.rm = FALSE)
 ## KNN Imputation function
 ```
 imputed_data <- knn_imputation(data, k = 3, distance = "euclidean", minkowski_p = 2)
-```
-### Terminate the parallel backend
-```
-stopCluster(cl)
 ```
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
