@@ -1,41 +1,9 @@
 #' Load required libraries
 #'
-#' Load the doParallel library for parallel processing and fastDummies for dummy encoding.
+#' Load the fastDummies for dummy encoding.
 #'
-#' @import doParallel
 #' @import fastDummies
-library(doParallel)
 library(fastDummies)
-
-#' Detect the number of available CPU cores
-#'
-#' Use the detectCores function to determine the number of CPU cores available.
-#'
-#' @return An integer representing the number of CPU cores.
-num_cores <- detectCores()
-
-#' Initialize and register a parallel cluster
-#'
-#' Create a parallel cluster using the detected CPU cores and register it for parallel processing.
-#'
-#' @return A parallel cluster object.
-#' @export
-tryCatch({
-  cl <- makeCluster(num_cores)
-  registerDoParallel(cl)
-}, error = function(e) {
-  cat("Error creating parallel cluster:", conditionMessage(e), "\n")
-  cat("Traceback:", conditionCall(e), "\n")
-  # Handle the error or exit gracefully based on your requirements
-}, finally = {
-  # Ensure that the parallel cluster is stopped, even if an error occurs
-  on.exit({
-    if (!is.null(cl)) {
-      stopCluster(cl)
-    }
-  })
-})
-
 #' KNN model function
 #'
 #' This function implements the K-nearest neighbors algorithm for classification.
@@ -440,22 +408,4 @@ knn_imputation <- function(data, k=3,distance="euclidean", minkowski_p=2) {
     }
   })
 }
-
-
-#' Terminate the parallel backend
-#'
-#' Stop the parallel cluster to release computing resources.
-#'
-#' @export
-on.exit({
-  if (!is.null(cl)) {
-    tryCatch({
-      stopCluster(cl)
-      cat("Parallel cluster stopped successfully.\n")
-    }, error = function(e) {
-      cat("Error stopping the parallel cluster:", conditionMessage(e), "\n")
-    })
-  }
-})
-
 
